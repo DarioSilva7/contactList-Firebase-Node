@@ -19,14 +19,20 @@ module.exports.getAlls= async ()=>{
     }
 }
 
-module.exports.updateById= async(id, data)=>{
-        try{
-            const {id} = req.params
-            await db.collection('contacts').doc(id).update(data)
-            return ['Contacto actualizado',null]
+module.exports.create= async (data)=>{
+    try{
+        const {firstname, lastname, phone, birthday, email}= data 
+        await db.collection('contacts').add({
+            firstname, 
+            lastname, 
+            phone, 
+            birthday,
+            email
+        })
+        return ["Contacto creado", null]
         }
         catch(e){
-            return [null, e]
+            return [null, e] 
         }
 }
 
@@ -40,19 +46,24 @@ module.exports.deleteById= async (id)=>{
     }
 }
 
-module.exports.create= async (req, res)=>{
+module.exports.editById= async(id)=>{
     try{
-        const {firstname, lastname, phone, birthday, email}= req.body
-        await db.collection('contacts').add({
-            firstname, 
-            lastname, 
-            phone, 
-            birthday,
-            email
-        })
-        return ["Contacto creado", null]
-        }
-        catch(e){
-            return [null, e]
-        }
+        const doc = await db.collection('contacts').doc(id).get()
+        return [{contact: {id: doc.id, ...doc.data()}}, null]
+    }
+    catch(e){
+        return [null, e]
+    }
 }
+
+module.exports.updateById= async(id, data)=>{
+    console.log(data,"data en update")
+    try{
+        await db.collection('contacts').doc(id).update(data)
+        return ['/contacts',null]
+    }
+    catch(e){
+        return [null, e]
+    }
+}
+

@@ -1,0 +1,134 @@
+{{!-- body --}}
+
+<div class="col-md-6 offset-md-3">
+  <div class="card bg-dark text-light">
+    <div class="card-header">
+      <h1 class="h4 text-white">Contacts List</h1>
+    </div>
+    <div class="card-body">
+        {{#if contacts}}
+        <ul class="list-group">
+          {{#each contacts}}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="my-auto">
+                        <h3 class="h6">{{firstname}} {{lastname}}</h3>
+                        <p>{{email}}</p>
+                        <p>{{phone}}</p>
+                        <p>{{birthday}}</p>
+                    </div>
+
+                    <div>
+                        <a 
+                        href="/contacts/delete/{{id}}"
+                        class="btn btn-danger"
+                        >Delete</a>
+
+                        <a 
+                        href="/contacts/edit/{{id}}"
+                        class="btn btn-secondary"
+                        >Edit</a>
+                    </div>
+                </li>
+            {{/each}}
+        </ul>
+      {{else}}
+        <p class="fs-4 text-center">No Contacts Yet.</p>
+{{/if}}
+</div>
+<div class="card-footer">
+    <form action="{{#unless contact.id}}/contacts/new{{else}}/contacts/update/{{contact.id}}{{/unless}}" method="POST">
+
+    <div class="row">
+        <div class="col">
+            <label for="firstname">Firstname:</label>
+            <input type="text" name="firstname" id="firstname" placeholder="Firstname" value="{{contact.firstname}}" autofocus >
+        </div>
+        <div class="col">
+            <label for="lastname">Lastname:</label>
+            <input type="text" name="lastname" id="lastname" placeholder="Lastname" value="{{contact.lastname}}">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="birthday">Birthday:</label>
+            <input type="text" name="birthday" id="birthday" placeholder="Birthday" value="{{contact.birthday}}">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="phone">Phone:</label>
+            <input type="text" name="phone" id= "phone" placeholder="Phone" value="{{contact.phone}}">
+        </div>
+        <div class="col">
+            <label for="email">Email:</label>
+            <input type="text" name="email" id= "email" placeholder="Email" value="{{contact.email}}">
+        </div>
+    </div>
+
+    {{!-- {{#if contact.id}}
+    <button>Update</button> --}}
+    {{#if contact.id}}
+        <button class="btn btn-primary btn-block">
+        Update
+        </button>
+
+        <a href="/contacts" class="btn btn-secondary">
+            Cancel
+        </a>
+
+    {{else}}
+        <button class="btn btn-primary btn-block">
+            Add</button>
+    {{/if}}
+</form>
+
+{{#if validaciones }}
+    {{#each validaciones }}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{msg}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {{/each}}
+  {{/if}}
+
+
+</div>
+  </div>
+</div>
+
+
+{{!-- modal --}}
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">SignUp</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <form id="signup-form">
+            <div class="form-group">
+              <input type="email" name="signup-email" id="signup-email"
+              class="form-control"
+              placeholder="Email"
+              required>
+            </div>
+
+            <div class="form-group">
+              <input type="password" name="signup-password" id="signup-password"
+              class="form-control"
+              placeholder="Password"
+              required>
+            </div>
+
+          <button type="submit" class="btn btn-primary">Singup</button>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
